@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 // import axios from 'axios'
 import notesService from './services/notes'
 import Note from "./components/note"
+import Notification from "./components/notify"
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -64,16 +65,38 @@ const App = () => {
     notesService.update(id, changedNote).then(returnedNote  => {
       setNotes(notes.map(note => note.id !== id ? note : returnedNote ))
     }).catch(error => {
-      alert(
-        `此笔记 '${note.content}' 已被从服务中删除`
+      setErrorMessage(
+        `笔记 '${note.content}' 已经被移除 ${error}`
       )
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
       setNotes(notes.filter(n => n.id !== id))
     })
+  }
+
+  // 添加一个新的状态，叫做errorMessage。让我们用一些错误信息来初始化它，这样我们就可以立即测试我们的组件。
+  const [errorMessage, setErrorMessage] = useState('some error happened...')
+
+  // 内联样式
+  const Footer = () => {
+    const footerStyle = {
+      color: 'green',
+      fontStyle: 'italic',
+      fontSize: 16
+    }
+    return (
+      <div style={footerStyle}>
+        <br />
+        <em>Note app, Department of Computer Science, University of Helsinki 2022</em>
+      </div>
+    )
   }
 
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? '重要' : '全部' }
@@ -86,6 +109,7 @@ const App = () => {
         <input value={newNote} onChange={handleNoteChange}/>
         <button type="submit">save</button>
       </form>
+      <Footer />
     </div>
   )
 }
