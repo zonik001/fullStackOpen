@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Person from './components/person'
+import Notification from './components/notify'
 import api from './services/api'
 
 const App = () => {
@@ -8,10 +9,15 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   
   useEffect(()=>{
+    // 错误测试，添加一条服务端不存在的数据
+    const noneData = {
+      name: '错误测试数据',
+      number: '11111111'
+    }
     api
       .getAll()
       .then(initialPersons=> {
-        setPersons(initialPersons)
+        setPersons(initialPersons.concat(noneData))
       })
   },[])
   const addOne = (event) => {
@@ -20,18 +26,23 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    // const newNameID = persons.find(person => person.name === newName).id  //错误的，没有id
+    
     // console.log(newNameID);
-    if(persons.map(person => person.name).includes(newName)) {
+    const result = persons.map(person => person.name).includes(newName)
+    if(result) {
       window.confirm(`${newName} 已经存入电话簿中,是否要更换号码`)
       // 获取被修改数据的id
-        
+      const newNameID = persons.find(person => person.name === newName).id
+      // 获取数组元素下标
+      const index = persons.findIndex(person => person.name === newName)
+      console.log(index);
       api
-        .update()
+        .update(newNameID,personObj)
         .then(returnedPerson => {
-          
+          const copy = [...persons]
+          copy.splice(index,1,returnedPerson)
+          setPersons(copy)
         })
-      
     } else {
       api
       .create(personObj)
@@ -75,11 +86,18 @@ const App = () => {
             setPersons(filterPerosn)
           })
         }
-      )
+      ).catch(err => {
+        setErrMessage('此数据不存在')
+        setTimeout(()=> {
+          setErrMessage(null)
+        },5000)
+      })
     
   }
+  const [errMessage, setErrMessage] = useState('错误提示')
   return (
     <div>
+      <Notification message={errMessage}/>
       <h2>search</h2>
       <form>
         姓名搜索:<input onChange={search}/>

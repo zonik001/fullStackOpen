@@ -13,8 +13,8 @@ const deleteOne = (id)=> {
     const request = axios.delete(`${baseUrl}/${id}`)
     return request.then(res => res.data)
 }
-const update = id => {
-    const request = axios.put(`${baseUrl}/${id}`)
+const update = (id, newObject) => {
+    const request = axios.put(`${baseUrl}/${id}`,newObject)
     return request.then(res => res.data)
 }
 
