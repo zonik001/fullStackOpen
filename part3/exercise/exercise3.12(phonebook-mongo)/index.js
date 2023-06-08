@@ -1,10 +1,14 @@
 const express = require('express')
-const morgan = require('morgan')
+const morgan = require('morgan') //不知道干啥的
+const cors = require('cors')
+
 
 const app = express()
 
 app.use(express.json())
+
 app.use(morgan('dev'))
+app.use(cors()) //跨域
 
 // const requestLogger = (request, response, next) => {
 //   console.log('Method:', request.method)
@@ -68,7 +72,7 @@ const genarateId = ()=> {
 
 app.post('/api/persons', (req, res) => {
   const body = req.body
-  console.log(body,persons.every(person => person.name !== body.name));
+  // console.log(body,persons.every(person => person.name !== body.name));
   if(!body.name) {
     return res.status(400).json({
         error: 'name mission'
@@ -88,10 +92,11 @@ app.post('/api/persons', (req, res) => {
     number: body.number
   }
   persons = persons.concat(person)
-  console.log(person);
+  // console.log(person);
   res.json(persons)
 })
 
-app.listen(3001, ()=> {
-    console.log('app start ,3000 port listen');
+const PORT = process.env.PORT || 3001
+app.listen(PORT, ()=> {
+    console.log('app start ,3001 port listen');
 })

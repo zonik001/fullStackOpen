@@ -16,6 +16,9 @@ const requestLogger = (request, response, next) => {
 }
 app.use(requestLogger)
 
+// 使用前端打包静态文件
+app.use(express.static('build'))
+
 let notes = [
     {
         id: 1,

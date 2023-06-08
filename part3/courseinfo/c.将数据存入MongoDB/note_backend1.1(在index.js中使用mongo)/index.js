@@ -1,6 +1,10 @@
+require('dotenv').config() //环境变量插件dotenv引入 .env文件中的环境变量是全局可用的
+// 使用方式 const url = process.env.MONGODB_URI  const PORT = process.env.PORT || 3001
+
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const Note = require('./models/note')
 
 
 app.use(cors())
@@ -16,45 +20,26 @@ const requestLogger = (request, response, next) => {
 }
 app.use(requestLogger)
 
-let notes = [
-    {
-        id: 1,
-        content: "HTML is easy",
-        date: "2022-05-30T17:30:31.098Z",
-        important: true
-    },
-    {
-        id: 2,
-        content: "Browser can execute only Javascript",
-        date: "2022-05-30T18:39:34.091Z",
-        important: false
-    },
-    {
-        id: 3,
-        content: "GET and POST are the most important methods of HTTP protocol",
-        date: "2022-05-30T19:20:14.298Z",
-        important: true
-    }
-]
+
+// 使用前端打包静态文件
+app.use(express.static('build'))
+
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
 })
   
 app.get('/api/notes', (request, response) => {
-    response.json(notes)
+    Note.find({}).then(notes => {
+        response.json(notes)
+    })
 })
 
 // 单条请求
 app.get('/api/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const note = notes.find(note => note.id === id)
-    response.json(note)
-    if (note) {
+    Note.findById(request.params.id).then(note => {
         response.json(note)
-    } else {
-        response.status(404).end()
-    }
+    })
 })
 
 // 单条删除
@@ -65,33 +50,33 @@ app.delete('/api/notes/:id', (request, response) => {
     response.status(204).end()
 })
 
-// 生成id
-const generateId = ()=> {
-    const maxId = notes.length > 0
-    ? Math.max(...notes.map(n => n.id))
-    : 0
-    return maxId + 1
-}
+// // 生成id  mongod会为文档生成id
+// const generateId = ()=> {
+//     const maxId = notes.length > 0
+//     ? Math.max(...notes.map(n => n.id))
+//     : 0
+//     return maxId + 1
+// }
 // 添加
 app.post('/api/notes', (request, response) => {
     const body = request.body
 
   if (!body.content) {
     return response.status(400).json({
-      error: 'content missing'
+      error: 'content 丢失'
     })
   }
 
-  const note = {
+  const note = new Note({
     content: body.content,
     important: body.important || false,
     date: new Date(),
-    id: generateId(),
-  }
+  })
 
-  notes = notes.concat(note)
+  note.save().then(savedNote => {
+    response.json(savedNote)
+  })
 
-  response.json(note)
 })
 const PORT = process.env.PORT || 3001
 app.listen(PORT,() => {
