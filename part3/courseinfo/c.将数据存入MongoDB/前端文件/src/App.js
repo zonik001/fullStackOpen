@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react'
 import notesService from './services/notes'
 import Note from "./components/note"
 import Notification from "./components/notify"
-import axios from 'axios'
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -15,10 +14,11 @@ const App = () => {
     'a new note...'
   )
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/notes')
-      .then(res => {
-        setNotes(res.data)
+    notesService
+      .getAll()
+      .then(initialNotes  => {
+        console.log('promise fulfilled')
+        setNotes(initialNotes)
       })
   }, [])
 

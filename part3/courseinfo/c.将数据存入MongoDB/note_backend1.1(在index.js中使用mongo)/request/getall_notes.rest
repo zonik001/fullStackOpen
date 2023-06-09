@@ -9,5 +9,13 @@ content-type: application/json
     "important": true
 }
 ###
-DELETE http://localhost:3001/api/notes
-content-type: application/json
+DELETE http://localhost:3001/api/notes/6482dc6713e59ed43d8f556c
+
+### 
+PUT http://localhost:3001/api/notes/6482dc6713e59ed43d8f556c
+Content-Type: application/json
+
+{
+    "content": "postMan is good tool for testing a restful-api",
+    "important": true
+}

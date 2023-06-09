@@ -27,7 +27,7 @@ Person.find({}).then(result => {
 })
 
 // 命令 node .\mongo.js "Arto Vihavainen" 045-1232456
-// 向persons集合中添加person文档
+// 向perosns集合中添加person文档
 // person.save().then((result)=> {
 //     console.log(`added ${name} number ${number} to phonebook`);
 //     mongoose.connection.close()

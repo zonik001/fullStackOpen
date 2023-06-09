@@ -1,19 +1,19 @@
 import axios from 'axios'
 
-// const baseUrl = 'http://localhost:3001/notes'
-const baseUrl = '/api/notes' //由于前后端在同一个地址，省去服务器部分,改为相对路径
+const baseUrl = 'http://localhost:3001/api/notes'  //本地开发环境地址
+// const baseUrl = '/api/notes' //打包后（生产环境地址）由于前后端在同一个地址，省去服务器部分,改为相对路径
 const getAll = () => {
     // return axios.get(baseUrl).then(response => response.data)  //then 一块封装
 
     // 模拟错误情况
     const request = axios.get(baseUrl)
-    const nonExisting = {
-        id: 10000,
-        content: 'This note is not saved to server',
-        date: '2019-05-30T17:30:31.098Z',
-        important: true,
-    }
-    return request.then(response => response.data.concat(nonExisting))
+    // const nonExisting = {
+    //     id: 10000,
+    //     content: 'This note is not saved to server',
+    //     date: '2019-05-30T17:30:31.098Z',
+    //     important: true,
+    // }
+    return request.then(response => response.data)
 }
 const create = newObject => {
     // return axios.post(baseUrl, newObject)  //不封装 .then
@@ -26,7 +26,7 @@ const update = (id, newObject) => {
 }
 
 export default {
-    getAll: getAll,
+    getAll,
     create,
     update
 }

@@ -20,9 +20,20 @@ const requestLogger = (request, response, next) => {
 }
 app.use(requestLogger)
 
-
 // 使用前端打包静态文件
 app.use(express.static('build'))
+
+// 错误处理中间件
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+
+  next(error)
+}
+app.use(errorHandler)
 
 
 app.get('/', (request, response) => {
@@ -36,18 +47,41 @@ app.get('/api/notes', (request, response) => {
 })
 
 // 单条请求
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
     Note.findById(request.params.id).then(note => {
+      if(note) {
         response.json(note)
-    })
+      }else {
+        response.status(404).end()
+      }
+    }).catch(error => next(error))
 })
 
 // 单条删除
-app.delete('/api/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    notes = notes.filter(note => note.id !== id)
-  
-    response.status(204).end()
+app.delete('/api/notes/:id', (request, response, next) => {
+    Note.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
+})
+
+// 更改重要性
+app.put('/api/notes/:id', (req, res,next) => {
+  const body = req.body
+  const note = {
+    content: body.content,
+    important: body.important
+  }
+  //{ new: true }参数 会让updatedNote获取到新文档（默认false)
+  Note.findByIdAndUpdate(req.params.id, note, {new: true})
+    .then(updatedNote => {
+       res.json(updatedNote)
+    })
+    .catch(error => {
+      console.log('dsadasdas');
+      next(error)
+    })
 })
 
 // // 生成id  mongod会为文档生成id
@@ -57,6 +91,7 @@ app.delete('/api/notes/:id', (request, response) => {
 //     : 0
 //     return maxId + 1
 // }
+
 // 添加
 app.post('/api/notes', (request, response) => {
     const body = request.body
