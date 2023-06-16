@@ -19,6 +19,9 @@ const App = () => {
       .then(initialPersons=> {
         setPersons(initialPersons.concat(noneData))
       })
+      .catch(error => {
+        console.log(error.response.data)
+      })
   },[])
   const addOne = (event) => {
     event.preventDefault()
@@ -43,6 +46,9 @@ const App = () => {
           copy.splice(index,1,returnedPerson)
           setPersons(copy)
         })
+        .catch(error => {
+          console.log(error.response.data)
+        })
     } else {
       api
       .create(personObj)
@@ -50,6 +56,9 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+      })
+      .catch(error => {
+        console.log(error.response.data)
       })
     }
     

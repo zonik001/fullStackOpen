@@ -1,0 +1,25 @@
+
+GET http://localhost:3001/api/blogs
+###
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "title": "firstblog",
+    "author": "zonik",
+    "url": "zonik001.github.io",
+    "likes": 1
+}
+###
+DELETE http://localhost:3001/api/blogs/648959bbca62da77509d1d98
+
+### 
+PUT http://localhost:3001/api/blogs/648959bbca62da77509d1d98
+Content-Type: application/json
+
+{
+    "title": "firstblog",
+    "author": "zonik",
+    "url": "zonik001.github.io",
+    "likes": 2
+}
