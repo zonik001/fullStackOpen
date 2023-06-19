@@ -38,6 +38,6 @@ POST http://localhost:3001/api/login
 content-type: application/json
 
 {
-    "username": "admina",
+    "username": "admin",
     "password": "admin"
 }
