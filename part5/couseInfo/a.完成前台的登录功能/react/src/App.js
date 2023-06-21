@@ -4,15 +4,34 @@ import { useState, useEffect } from 'react'
 // 因此，当从服务器获取数据时，效果钩子正是正确的工具。
 // import axios from 'axios'
 import notesService from './services/notes'
+import loginService from './services/login'
 import Note from "./components/note"
 import Notification from "./components/notify"
 
+// 内联样式
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+  return (
+    <div style={footerStyle}>
+      <br />
+      <em>Note app, Department of Computer Science, University of Helsinki 2023</em>
+    </div>
+  )
+}
 const App = () => {
   const [notes, setNotes] = useState([])
 
   const [newNote, setNewNote] = useState(
     'a new note...'
   )
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
+
   useEffect(() => {
     notesService
       .getAll()
@@ -73,25 +92,71 @@ const App = () => {
   // 添加一个新的状态，叫做errorMessage。让我们用一些错误信息来初始化它，这样我们就可以立即测试我们的组件。
   const [errorMessage, setErrorMessage] = useState('some error happened...')
 
-  // 内联样式
-  const Footer = () => {
-    const footerStyle = {
-      color: 'green',
-      fontStyle: 'italic',
-      fontSize: 16
-    }
-    return (
-      <div style={footerStyle}>
-        <br />
-        <em>Note app, Department of Computer Science, University of Helsinki 2022</em>
-      </div>
-    )
-  }
 
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    try {
+      const user = await loginService.login({
+        username, password,
+      })
+      setUser(user)
+      notesService.setToken(user.token)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+  const loginForm = () => (
+    <form onSubmit={handleLogin}>
+      <div>
+        username
+          <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+      </div>
+      <div>
+        password
+          <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </div>
+      <button type="submit">login</button>
+    </form>
+  )
+
+  const noteForm = () => (
+    <form onSubmit={addNote}>
+      <input
+        value={newNote}
+        onChange={handleNoteChange}
+      />
+      <button type="submit">save</button>
+    </form>
+  )
   return (
     <div>
       <h1>Notes</h1>
+      
       <Notification message={errorMessage} />
+
+      {user === null ?
+        loginForm() :
+        <div>
+        <p>{user.name} logged-in</p>
+        {noteForm()}
+      </div>
+      }
+
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? '重要' : '全部' }
@@ -100,10 +165,7 @@ const App = () => {
       <ul>
         {notesToShow.map(note => <Note note={note} key={note.id} toggleImportance={()=>toggleImportanceOf(note.id)}></Note>)}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange}/>
-        <button type="submit">save</button>
-      </form>
+      
       <Footer />
     </div>
   )
