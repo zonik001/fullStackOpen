@@ -41,6 +41,15 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.sessionStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      notesService.setToken(user.token)
+    }
+  }, [])
+
   const handleNoteChange = (event) => {
     console.log(event.target.value)
     setNewNote(event.target.value)
@@ -99,6 +108,10 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+
+      window.sessionStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      )
       setUser(user)
       notesService.setToken(user.token)
       setUsername('')
