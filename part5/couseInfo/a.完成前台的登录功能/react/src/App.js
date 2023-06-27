@@ -101,7 +101,6 @@ const App = () => {
   // 添加一个新的状态，叫做errorMessage。让我们用一些错误信息来初始化它，这样我们就可以立即测试我们的组件。
   const [errorMessage, setErrorMessage] = useState('some error happened...')
 
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
