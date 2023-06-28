@@ -25,6 +25,7 @@ const NoteForm = ({ createNote }) => {
                 //  A component is changing a controlled input to be uncontrolled. This is likely caused by the value changing from a defined to undefined, which should not happen. 
                 // Decide between using a controlled or uncontrolled input element for the lifetime of the component.
                 onChange={({target}) => {setNewNote(target.value)}}
+                placeholder='write here note content'
                 />
                 <button type="submit">save</button>
             </form>

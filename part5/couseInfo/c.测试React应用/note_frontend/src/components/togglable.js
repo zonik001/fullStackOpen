@@ -21,7 +21,7 @@ const Togglable  = forwardRef((props,ref) => {
             <div style={hideWhenVisible}>
                 <button onClick={toggleVisibility}>{props.buttonLabel}</button>
             </div>
-            <div style={showWhenVisible}>
+            <div style={showWhenVisible} className="togglableContent">
                 {/* 用来引用组件的子组件。子组件是我们在组件的打开和关闭标签之间定义的React元素。即LoginForm */}
                 {props.children} 
                 <button onClick={toggleVisibility}>cancel</button>
@@ -30,6 +30,7 @@ const Togglable  = forwardRef((props,ref) => {
     )
 })
 
+Togglable.displayName = 'Togglable'  //定义组件名称，解决eslint报错 Component definition is missing display name 
 
 // propTypes类型校验
 Togglable.propTypes = {
