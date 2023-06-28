@@ -11,7 +11,7 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkb
     "url": "zonik001.github.io"
 }
 ###
-DELETE http://localhost:3001/api/blogs/648959bbca62da77509d1d98
+DELETE http://localhost:3001/api/blogs/64992b3da6f44ff4d10e3430
 
 ### 
 PUT http://localhost:3001/api/blogs/648959bbca62da77509d1d98
