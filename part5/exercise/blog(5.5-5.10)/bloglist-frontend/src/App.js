@@ -15,14 +15,20 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      {
+        const copy = [...blogs]
+        setBlogs( copy.sort((a,b) =>  a.likes - b.likes ) )
+      }
     )  
+    
   }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.sessionStorage.getItem('loginUser')
+    
     if(loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      console.log(user);
       setUser(user)
       blogService.setToken(user.token)
     }
@@ -57,9 +63,31 @@ const App = () => {
   // }
   const addBlog = (newObj) => {
     blogService.create(newObj).then(res=> {
+      console.log(res);
       blogFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(res))
     })
+  }
+
+  const updatedBlog = async (id) => {
+     try {
+      const blog = blogs.find(item => item.id === id)
+      const changedBlog = {...blog, likes: blog.likes+1}
+      console.log(changedBlog);
+      const returnedBlog = await blogService.update(id, changedBlog)      
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog ))
+     } catch (error) {
+      setErrorMessage(error)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+     }
+  }
+
+  const deleteBlog = async id => {
+    window.confirm(`请问是否要删除该条博客`)
+    await blogService.deleteApi(id)
+    setBlogs(blogs.filter(blog => blog.id !== id))
   }
 
   // A component is changing a controlled input to be uncontrolled. This is likely caused by the value changing from a defined to undefined, which should not happen. 
@@ -82,7 +110,7 @@ const App = () => {
           <button onClick={handleLogout}>logout</button>
           {blogform()}
           {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLikes={()=>updatedBlog(blog.id)} handleRemove={() => deleteBlog(blog.id)} />
           )}
         </div>
       }
