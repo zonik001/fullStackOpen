@@ -1,0 +1,44 @@
+
+GET http://localhost:3001/api/notes
+###
+POST http://localhost:3001/api/notes
+content-type: application/json
+Authorization: bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI2NDhmYzM0N2JjODBmZmExZjYwNWJhYzkiLCJpYXQiOjE2ODcyMjg4Njd9.-SmvK2dH2CcJFRcY_OB_JqbLHf3vi2RxozefJUAUIBA
+
+{
+    "content": "请求头，令牌",
+    "important": true,
+    "userId": "648fb9f646beebca414b3e6e"
+}
+###
+DELETE http://localhost:3001/api/notes/6487c4feaaab6703c2badaa6
+
+### 
+PUT http://localhost:3001/api/notes/6482dc6713e59ed43d8f556c
+Content-Type: application/json
+
+{
+    "important": true
+}
+
+###
+POST http://localhost:3001/api/users
+content-type: application/json
+
+{
+    "username": "admin",
+    "name": "Adminuser",
+    "password": "admin"
+}
+
+###
+GET http://localhost:3001/api/users
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}

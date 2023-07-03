@@ -11,14 +11,14 @@ const Blog = ({blog, handleLikes, handleRemove}) => {
   const isShow = {display: showAll? '' : 'none'}
 
   return(
-    <div style={border}>
+    <div style={border} className='blog'>
       <button onClick={handleShowAll}>{btnLabel}</button>
       <div>{blog.title} {blog.author}</div> 
-      <div style={isShow}>
+      <div style={isShow} className='url'>
         {blog.url}
       </div>
-      <div style={isShow}>
-        like {blog.likes} <button onClick={handleLikes}>like</button>
+      <div style={isShow} className='likes'>
+        likes {blog.likes} <button onClick={handleLikes}>like</button>
       </div>
       <button style={isShow} onClick={handleRemove}>remove</button>
     </div>  
