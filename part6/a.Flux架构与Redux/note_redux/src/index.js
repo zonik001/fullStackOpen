@@ -1,21 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 
+import { createStore } from 'redux'
 
-// axios.get('http://localhost:3001/notes').then(res => {
-//   const notes = res.data
-//   ReactDOM.createRoot(document.getElementById('root')).render(<App notes={notes}/>)
-//   console.log(res);
-//   console.log(notes);
-// })
+import { Provider } from 'react-redux'
+import App from './App'
+import noteReducer from './reducers/noteReducer'
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+const store = createStore(noteReducer)
 
-// const promise2 = axios.get('http://localhost:3001/foobar')
-// console.log(promise2)
+ReactDOM.createRoot(document.getElementById('root')).render(
 
-
-
-
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+)

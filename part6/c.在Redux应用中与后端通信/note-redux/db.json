@@ -1,0 +1,49 @@
+{
+  "notes": [
+    {
+      "content": "the app state is in redux store",
+      "important": true,
+      "id": 1
+    },
+    {
+      "content": "state changes are made with actions",
+      "important": false,
+      "id": 2
+    },
+    {
+      "content": "sadasdd",
+      "important": false,
+      "id": 3
+    },
+    {
+      "content": "dsad",
+      "important": false,
+      "id": 4
+    },
+    {
+      "content": "sadasdd",
+      "important": false,
+      "id": 5
+    },
+    {
+      "content": "sadasdd",
+      "important": false,
+      "id": 6
+    },
+    {
+      "content": "nihao",
+      "important": false,
+      "id": 7
+    },
+    {
+      "content": "sadasdd",
+      "important": false,
+      "id": 8
+    },
+    {
+      "content": "的撒的",
+      "important": false,
+      "id": 9
+    }
+  ]
+}
