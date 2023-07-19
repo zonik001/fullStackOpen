@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useField } from './hook'
 
 import {
   Routes,
@@ -71,22 +72,26 @@ const Notification = ({message}) => (
   <div>{message}</div>
 )
 
-
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField('conetent')
+  const author = useField('author')
+  const info = useField('info')
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     navigate('/anecdotes')
+  }
+  const reset = () =>{
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -95,18 +100,20 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          {/* 既要使用传播语法又要去除reset 怎么做?? */}
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...info} />
         </div>
-        <button>create</button>
+        <button type='submit'>create</button>
       </form>
+      <button onClick={reset}>reset</button>
     </div>
   )
 
