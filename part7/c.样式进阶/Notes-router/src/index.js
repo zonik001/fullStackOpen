@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
-// import App from './reactBootstrap'
-import App from './material'
+// import App from './reactBootstrapApp' //bootStrapui框架
+import App from './materialApp' //materialUI框架
 import {
   BrowserRouter as Router,
 } from "react-router-dom"
