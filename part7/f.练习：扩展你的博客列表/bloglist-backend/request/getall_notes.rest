@@ -1,0 +1,49 @@
+
+GET http://localhost:3001/api/blogs
+###
+POST http://localhost:3001/api/blogs
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI2NDkxNmVkNDU4ZWRmOGIyZDZmMDkxNGQiLCJpYXQiOjE2ODgwMDU4MjgsImV4cCI6MTY4ODAwOTQyOH0.ZuDs1sfLvr8YqINtRy4gWJwmkz8J3iYIb7oMJdNPsfk
+
+{
+    "title": "我的博客",
+    "author": "zonik",
+    "url": "zonik001.github.io",
+    "likes": 10
+}
+###
+DELETE http://localhost:3001/api/blogs/649ceeb82f3e6811b5d74812
+
+### 
+PUT http://localhost:3001/api/blogs/648959bbca62da77509d1d98
+Content-Type: application/json
+
+{
+    "title": "firstblog",
+    "author": "zonik",
+    "url": "zonik001.github.io",
+    "likes": 2,
+    "userId": "64915bfa947a24c5c2429464"
+}
+
+###
+POST http://localhost:3001/api/users
+content-type: application/json
+
+{
+    "username": "admin",
+    "name": "adminuser",
+    "password": "admin"
+}
+
+###
+GET http://localhost:3001/api/users
+
+###
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
