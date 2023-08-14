@@ -1,4 +1,5 @@
-const diagnoseEntries =
+import { diagnosesEntry } from "../src/types";
+const diagnoseEntries: Array<diagnosesEntry> =
     [
         {
             "code": "M24.2",
