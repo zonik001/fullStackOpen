@@ -1,7 +1,13 @@
 // import diaryData from '../../data/diaries';
 import diaries from '../../data/diaries';
 
-import { NonSensitiveDiaryEntry, DiaryEntry } from '../types';
+import {
+    NonSensitiveDiaryEntry,
+    DiaryEntry,
+    NewDiaryEntry
+} from '../types';
+
+import { toNewDiaryEntry } from '../utils';
 
 
 // 不能将类型“{ id: number; date: string; weather: string; visibility: string; comment: string; }[]”分配给类型“DiaryEntry[]”。
@@ -21,9 +27,6 @@ const getEntries = (): Array<DiaryEntry> => {
     return diaries;
 };
 
-const addDiary = () => {
-    return null;
-};
 
 // const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
 //     return diaries;
@@ -42,8 +45,25 @@ const getNonSensitiveEntries = (): NonSensitiveDiaryEntry[] => {
     }));
 };
 
+const findById = (id: Number): DiaryEntry | undefined => {
+    const entry = diaries.find(item => id === item.id)
+    return entry
+}
+
+const addDiary = (entry: NewDiaryEntry): DiaryEntry => {
+
+    const newDiaryEntry = {
+        id: Math.max(...diaries.map(d => d.id)) + 1,
+        ...entry
+    }
+
+    diaries.push(newDiaryEntry);
+    return newDiaryEntry;
+};
+
 export default {
     getEntries,
-    addDiary,
-    getNonSensitiveEntries
+    getNonSensitiveEntries,
+    findById,
+    addDiary
 };
