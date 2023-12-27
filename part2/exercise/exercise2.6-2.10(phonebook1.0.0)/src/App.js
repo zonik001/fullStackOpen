@@ -32,10 +32,11 @@ const App = () => {
     setNewNumber(event.target.value)
   }
   const search = (event) => {
+    const searchName = event.target.value.toLowerCase()
+    console.log(searchName);
     const filterPerson = persons.filter(person => {
       const copy = {...person}
       const name = copy.name.toLowerCase()
-      const searchName = event.target.value.toLowerCase()
       return name.includes(searchName)
     })
     setPersons(filterPerson)

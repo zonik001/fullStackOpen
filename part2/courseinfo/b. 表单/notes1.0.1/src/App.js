@@ -10,7 +10,7 @@ const App = (props) => {
     'a new note...'
   )
   const handleNoteChange = (event) => {
-    console.log(event.target.value)
+    console.log(111)
     setNewNote(event.target.value)
   }
 

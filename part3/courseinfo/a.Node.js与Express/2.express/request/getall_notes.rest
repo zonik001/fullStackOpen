@@ -5,6 +5,6 @@ POST http://localhost:3001/api/notes
 content-type: application/json
 
 {
-    "name": "postMan is good tool for testing a restful-api",
+    "name": "postMan is good tool for testing a restful-api1",
     "important": true
 }
